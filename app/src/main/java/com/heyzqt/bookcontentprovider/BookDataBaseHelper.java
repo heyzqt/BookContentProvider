@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 /**
  * Created by heyzqt on 12/12/2017.
@@ -31,7 +32,7 @@ public class BookDataBaseHelper extends SQLiteOpenHelper {
 
 	private static final String TAG = "BookDataBaseHelper";
 
-	public synchronized BookDataBaseHelper getInstance(Context context) {
+	public static synchronized BookDataBaseHelper getInstance(Context context) {
 		if (mSingleton == null) {
 			mSingleton = new BookDataBaseHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
@@ -46,10 +47,15 @@ public class BookDataBaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		Log.i(TAG, "onCreate: ");
+		db.execSQL("CREATE TABLE " + Tables.BOOK + "(" + BookColumns.BOOK_ID +
+				" INTEGER PRIMARY KEY AUTOINCREMENT," +
+				BookColumns.BOOK_NAME + " TEXT," +
+				BookColumns.BOOK_NUMBER + " TEXT);");
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+		Log.i(TAG, "onUpgrade: ");
 	}
 }
