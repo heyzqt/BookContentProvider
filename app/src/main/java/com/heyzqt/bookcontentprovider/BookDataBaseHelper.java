@@ -28,21 +28,21 @@ public class BookDataBaseHelper extends SQLiteOpenHelper {
 
 	private static BookDataBaseHelper mSingleton = null;
 
-	private final Context mContext;
-
 	private static final String TAG = "BookDataBaseHelper";
 
 	public static synchronized BookDataBaseHelper getInstance(Context context) {
 		if (mSingleton == null) {
-			mSingleton = new BookDataBaseHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+			mSingleton = new BookDataBaseHelper(context.getApplicationContext(), DATABASE_NAME,
+					null,
+					DATABASE_VERSION);
 		}
 		return mSingleton;
 	}
 
-	protected BookDataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory cursorFactory,
+	private BookDataBaseHelper(Context context, String name,
+			SQLiteDatabase.CursorFactory cursorFactory,
 			int version) {
 		super(context, name, null, DATABASE_VERSION);
-		mContext = context;
 	}
 
 	@Override
