@@ -57,6 +57,7 @@ public class BookContentProvider extends ContentProvider {
 	public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String
 			selection,
 			@Nullable String[] selectionArgs, @Nullable String sortOrder) {
+		Log.i(TAG, "query: ");
 		final SQLiteDatabase db = mHelper.getReadableDatabase();
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
@@ -80,6 +81,7 @@ public class BookContentProvider extends ContentProvider {
 	@Nullable
 	@Override
 	public String getType(@NonNull Uri uri) {
+		Log.i(TAG, "getType: ");
 		int match = mBookMatcher.match(uri);
 		switch (match) {
 			case BOOK:
@@ -95,18 +97,21 @@ public class BookContentProvider extends ContentProvider {
 	@Nullable
 	@Override
 	public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+		Log.i(TAG, "insert: ");
 		return null;
 	}
 
 	@Override
 	public int delete(@NonNull Uri uri, @Nullable String selection,
 			@Nullable String[] selectionArgs) {
+		Log.i(TAG, "delete: ");
 		return 0;
 	}
 
 	@Override
 	public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
 			@Nullable String[] selectionArgs) {
+		Log.i(TAG, "update: ");
 		return 0;
 	}
 
