@@ -10,7 +10,7 @@ public class Book {
 
 	private String name;
 
-	private String number;
+	private String type;
 
 	public int get_ID() {
 		return _ID;
@@ -28,12 +28,12 @@ public class Book {
 		this.name = name;
 	}
 
-	public String getNumber() {
-		return number;
+	public String getType() {
+		return type;
 	}
 
-	public void setNumber(String number) {
-		this.number = number;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class Book {
 		return "Book{" +
 				"_ID=" + _ID +
 				", name='" + name + '\'' +
-				", number='" + number + '\'' +
+				", type='" + type + '\'' +
 				'}';
 	}
 }

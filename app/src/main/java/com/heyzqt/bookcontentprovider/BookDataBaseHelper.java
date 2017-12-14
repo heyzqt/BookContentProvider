@@ -23,7 +23,7 @@ public class BookDataBaseHelper extends SQLiteOpenHelper {
 	public interface BookColumns {
 		public static final String BOOK_ID = BaseColumns._ID;
 		public static final String BOOK_NAME = "name";
-		public static final String BOOK_NUMBER = "number";
+		public static final String BOOK_TYPE = "type";
 	}
 
 	private static BookDataBaseHelper mSingleton = null;
@@ -51,7 +51,7 @@ public class BookDataBaseHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE " + Tables.BOOK + "(" + BookColumns.BOOK_ID +
 				" INTEGER PRIMARY KEY AUTOINCREMENT," +
 				BookColumns.BOOK_NAME + " TEXT," +
-				BookColumns.BOOK_NUMBER + " TEXT);");
+				BookColumns.BOOK_TYPE + " TEXT);");
 	}
 
 	@Override

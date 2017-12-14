@@ -1,6 +1,7 @@
 package com.heyzqt.bookcontentprovider;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -12,8 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import java.util.List;
-
 /**
  * Created by heyzqt on 12/12/2017.
  */
@@ -23,7 +22,7 @@ public class BookContentProvider extends ContentProvider {
 	private static final int BOOK = 1;
 	private static final int BOOK_ID = 2;
 	private static final int BOOK_NAME = 3;
-	private static final int BOOK_NUMBER = 4;
+	private static final int BOOK_TYPE = 4;
 
 	private static final String AUTHORITY = "com.heyzqt.book";
 
@@ -40,8 +39,8 @@ public class BookContentProvider extends ContentProvider {
 	static {
 		mBookMatcher.addURI(AUTHORITY, "book", BOOK);
 		mBookMatcher.addURI(AUTHORITY, "book/#", BOOK_ID);
-		mBookMatcher.addURI(AUTHORITY, "book/*", BOOK_NAME);
-		mBookMatcher.addURI(AUTHORITY, "book/#/number", BOOK_NUMBER);
+		mBookMatcher.addURI(AUTHORITY, "book/name/*", BOOK_NAME);
+		mBookMatcher.addURI(AUTHORITY, "book/type/*", BOOK_TYPE);
 	}
 
 	@Override
@@ -57,25 +56,26 @@ public class BookContentProvider extends ContentProvider {
 	public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String
 			selection,
 			@Nullable String[] selectionArgs, @Nullable String sortOrder) {
-		Log.i(TAG, "query: ");
 		final SQLiteDatabase db = mHelper.getReadableDatabase();
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
 		final int match = mBookMatcher.match(uri);
+		Log.i(TAG, "query: match = " + match);
 		switch (match) {
 			case BOOK:
 				String table = uri.getPathSegments().get(0);
-				return db.query(table, projection, selection,
-						selectionArgs, null, null, sortOrder);
+				qb.setTables(table);
+				break;
 			case BOOK_ID:
-				List<String> pathSegments = uri.getPathSegments();
-				qb.setTables(pathSegments.get(0));
-				return qb.query(db, projection, selection, selectionArgs,
-						null,
-						null,
-						sortOrder);
+				long bookId = ContentUris.parseId(uri);
+				table = uri.getPathSegments().get(0);
+				qb.setTables(table);
+				selectionArgs = insertSelectionArg(selectionArgs, String.valueOf(bookId));
+				qb.appendWhere(BookConstract.Book._ID + " = ?");
+				break;
+
 		}
-		return null;
+		return qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 	}
 
 	@Nullable
@@ -88,7 +88,7 @@ public class BookContentProvider extends ContentProvider {
 				return BookContentProvider.CONTENT_TYPE;
 			case BOOK_ID:
 			case BOOK_NAME:
-			case BOOK_NUMBER:
+			case BOOK_TYPE:
 				return BookContentProvider.CONTENT_ITEM_TYPE;
 		}
 		return null;
@@ -117,5 +117,17 @@ public class BookContentProvider extends ContentProvider {
 
 	public BookDataBaseHelper getBookDataBaseHelper() {
 		return mHelper;
+	}
+
+	private String[] insertSelectionArg(String[] args, String str) {
+		if (args == null) {
+			return new String[]{str};
+		}
+
+		int newLength = args.length + 1;
+		String[] newSelectionArgs = new String[newLength];
+		newSelectionArgs[0] = str;
+		System.arraycopy(args, 0, newSelectionArgs, 1, args.length);
+		return newSelectionArgs;
 	}
 }

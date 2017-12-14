@@ -26,10 +26,16 @@ public class MainActivity extends AppCompatActivity {
 		mContext = this;
 		Log.i(TAG, "onCreate: ");
 
-		findAllBooks();
+		//insertSomeData();
+
+		queryAllBooks();
+		queryBookById(3);
+		queryBookByName("Sherlock Holmes");
+		queryBookByType("TYPEA001");
+		queryBookByUriID(6);
 	}
 
-	private void insertSomeData(){
+	private void insertSomeData() {
 		BookDataBaseHelper dataBaseHelper = BookDataBaseHelper.getInstance(mContext);
 		SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
 		String insertStr1 = "INSERT INTO BOOK VALUES(null,\'Little Prince\',\'TYPEA001\')";
@@ -43,19 +49,81 @@ public class MainActivity extends AppCompatActivity {
 		database.execSQL(insertStr4);
 	}
 
-	private void findAllBooks() {
-		Uri uri = Uri.parse(MainActivity.CONTENT + MainActivity.AUTHORITY);
-		uri = Uri.withAppendedPath(uri, "book");
-		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-		if (cursor.getCount() > 0) {
-			while (cursor.moveToNext()) {
-				StringBuffer sb = new StringBuffer();
-				for (int i = 0; i < cursor.getColumnCount(); i++) {
-					sb.append(cursor.getString(i) + ",");
-				}
-				Log.i(TAG, "" + sb);
-			}
+	private void queryAllBooks() {
+		Cursor cursor = getContentResolver().query(BookConstract.Book.CONTENT_URI,
+				null,
+				null,
+				null,
+				null);
+		if (cursor != null) {
+			showCursor(cursor);
+			cursor.close();
 		}
-		cursor.close();
+	}
+
+	private void queryBookById(int id) {
+		Cursor cursor = getContentResolver().query(BookConstract.Book.CONTENT_URI,
+				null,
+				BookConstract.Book._ID + " = ?",
+				new String[]{id + ""},
+				null);
+		if (cursor != null) {
+			showCursor(cursor);
+			cursor.close();
+		}
+	}
+
+	private void queryBookByUriID(int id) {
+		Uri uri = Uri.withAppendedPath(BookConstract.Book.CONTENT_URI, id + "");
+		Cursor cursor = getContentResolver().query(uri,
+				null,
+				null,
+				null,
+				null);
+		if (cursor != null) {
+			showCursor(cursor);
+			cursor.close();
+		}
+	}
+
+	private void queryBookByName(String name) {
+		Cursor cursor = getContentResolver().query(BookConstract.Book.CONTENT_URI,
+				null,
+				BookConstract.Book.NAME + " = ?",
+				new String[]{name},
+				null);
+		if (cursor != null) {
+			showCursor(cursor);
+			cursor.close();
+		}
+	}
+
+	private void queryBookByType(String type) {
+		Cursor cursor = getContentResolver().query(BookConstract.Book.CONTENT_URI,
+				null,
+				BookConstract.Book.TYPE + " = ?",
+				new String[]{type},
+				null);
+		if (cursor != null) {
+			showCursor(cursor);
+			cursor.close();
+		}
+	}
+
+	private void showCursor(Cursor cursor) {
+		try {
+			if (cursor.getCount() > 0) {
+				while (cursor.moveToNext()) {
+					StringBuffer sb = new StringBuffer();
+					for (int i = 0; i < cursor.getColumnCount(); i++) {
+						sb.append(cursor.getString(i) + ",");
+					}
+					Log.i(TAG, "" + sb);
+				}
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			Log.i(TAG, "queryBookById: NullPointerException");
+		}
 	}
 }
