@@ -211,6 +211,20 @@ public class BookContentProvider extends ContentProvider {
 				result = db.update(BookDataBaseHelper.Tables.BOOK, values, selection,
 						selectionArgs);
 				break;
+			case BOOK_ID:
+				long bookId = ContentUris.parseId(uri);
+				StringBuilder idSb = new StringBuilder();
+				if (selection == null || "".equals(selection)) {
+					idSb.append(BookConstract.Book._ID + " = ?");
+				} else {
+					idSb.append(selection);
+					idSb.append(" AND " + BookConstract.Book._ID + " = ?");
+				}
+
+				String[] idArgs = insertSelectionArg(selectionArgs, String.valueOf(bookId));
+				result = db.update(BookDataBaseHelper.Tables.BOOK, values, idSb.toString(),
+						idArgs);
+				break;
 		}
 		return result;
 	}

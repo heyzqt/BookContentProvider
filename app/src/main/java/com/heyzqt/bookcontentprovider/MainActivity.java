@@ -1,5 +1,6 @@
 package com.heyzqt.bookcontentprovider;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -46,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
 		insertOneBook();
 		queryAllBooks();
 
-		updateOneDate();
+		//updateOneDate();
+		updateBookByUriId(17);
 		queryAllBooks();
 	}
 
@@ -57,6 +59,18 @@ public class MainActivity extends AppCompatActivity {
 		cv.put(BookConstract.Book.MIMETYPE_ID, "1");
 		Uri uri = getContentResolver().insert(BookConstract.Book.CONTENT_URI, cv);
 		Log.i(TAG, "insertOneBook: uri = " + uri);
+	}
+
+	private void updateBookByUriId(int id) {
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(BookConstract.Name.NAME, "Book zzz");
+
+		Uri newUri = ContentUris.withAppendedId(BookConstract.Book.CONTENT_URI, id);
+		int result = getContentResolver().update(newUri,
+				contentValues,
+				null,
+				null);
+		Log.i(TAG, "updateBookByUriId: result = " + result);
 	}
 
 	private void updateOneDate() {
