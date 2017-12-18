@@ -112,7 +112,27 @@ public class BookContentProvider extends ContentProvider {
 	@Override
 	public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
 		Log.i(TAG, "insert: ");
-		return null;
+		final SQLiteDatabase db = mHelper.getWritableDatabase();
+		long id = 0;
+
+		final int match = mBookMatcher.match(uri);
+		Log.i(TAG, "insert: match = " + match);
+		switch (match) {
+			case BOOK:
+				id = db.insert(BookDataBaseHelper.Tables.BOOK,
+						BookConstract.Book._ID,
+						values);
+				break;
+			case BOOK_ID:
+				break;
+			case BOOK_NAME:
+				break;
+		}
+
+		if (id < 0) {
+			return null;
+		}
+		return ContentUris.withAppendedId(uri, id);
 	}
 
 	@Override

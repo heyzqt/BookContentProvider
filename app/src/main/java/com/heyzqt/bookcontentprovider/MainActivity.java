@@ -1,5 +1,6 @@
 package com.heyzqt.bookcontentprovider;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -36,10 +37,23 @@ public class MainActivity extends AppCompatActivity {
 //		queryBookByUriID(6);
 		//queryBookByUriName("The Sorrows of Young Werther");
 
-		queryAllBooks();
+		//queryAllBooks();
 		//deleteBookById();
 		//deleteBookByUriId(2);
-		deleteBookByUriName("Harry Porter");
+		//deleteBookByUriName("Harry Porter");
+
+		queryAllBooks();
+		insertOneBook();
+		queryAllBooks();
+	}
+
+	private void insertOneBook() {
+		ContentValues cv = new ContentValues();
+		cv.put(BookConstract.Name.NAME, "book A");
+		cv.put(BookConstract.Type.TYPE, "TYPEB002");
+		cv.put(BookConstract.Book.MIMETYPE_ID, "1");
+		Uri uri = getContentResolver().insert(BookConstract.Book.CONTENT_URI, cv);
+		Log.i(TAG, "insertOneBook: uri = " + uri);
 	}
 
 	private void deleteBookByUriName(String str) {

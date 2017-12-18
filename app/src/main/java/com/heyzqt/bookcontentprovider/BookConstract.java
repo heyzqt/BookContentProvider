@@ -21,6 +21,8 @@ public final class BookConstract {
 		public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "book");
 
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/book";
+
+		public static final String MIMETYPE_ID = "mimetype_id";
 	}
 
 	public static final class Name implements BaseColumns {
