@@ -201,8 +201,18 @@ public class BookContentProvider extends ContentProvider {
 	@Override
 	public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
 			@Nullable String[] selectionArgs) {
-		Log.i(TAG, "update: ");
-		return 0;
+		final SQLiteDatabase db = mHelper.getWritableDatabase();
+		int result = -1;
+
+		final int match = mBookMatcher.match(uri);
+		Log.i(TAG, "update: match = " + match);
+		switch (match) {
+			case BOOK:
+				result = db.update(BookDataBaseHelper.Tables.BOOK, values, selection,
+						selectionArgs);
+				break;
+		}
+		return result;
 	}
 
 	public BookDataBaseHelper getBookDataBaseHelper() {

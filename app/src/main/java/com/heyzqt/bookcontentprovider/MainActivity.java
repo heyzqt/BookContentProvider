@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
 		queryAllBooks();
 		insertOneBook();
 		queryAllBooks();
+
+		updateOneDate();
+		queryAllBooks();
 	}
 
 	private void insertOneBook() {
@@ -54,6 +57,16 @@ public class MainActivity extends AppCompatActivity {
 		cv.put(BookConstract.Book.MIMETYPE_ID, "1");
 		Uri uri = getContentResolver().insert(BookConstract.Book.CONTENT_URI, cv);
 		Log.i(TAG, "insertOneBook: uri = " + uri);
+	}
+
+	private void updateOneDate() {
+		ContentValues cv = new ContentValues();
+		cv.put(BookConstract.Name.NAME, "Book X");
+		int result = getContentResolver().update(BookConstract.Book.CONTENT_URI,
+				cv,
+				BookConstract.Name.NAME + " = ?",
+				new String[]{"Sherlock Holmes"});
+		Log.i(TAG, "updateOneDate: result = " + result);
 	}
 
 	private void deleteBookByUriName(String str) {
