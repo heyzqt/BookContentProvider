@@ -83,7 +83,7 @@ public class BookContentProvider extends ContentProvider {
 				qb.setTables(table);
 
 				qb.appendWhere("1 AND " + mimeTypeIsNameExpression);
-				if ("name" .equals(pathSegments.get(1)) && pathSegments.get(2) != null) {
+				if ("name".equals(pathSegments.get(1)) && pathSegments.get(2) != null) {
 					qb.appendWhere(" AND " + BookConstract.Name.NAME + " = "
 							+ '\'' + pathSegments.get(2) + '\'');
 				}
@@ -118,8 +118,29 @@ public class BookContentProvider extends ContentProvider {
 	@Override
 	public int delete(@NonNull Uri uri, @Nullable String selection,
 			@Nullable String[] selectionArgs) {
-		Log.i(TAG, "delete: ");
-		return 0;
+		int result = -1;
+		final SQLiteDatabase db = mHelper.getWritableDatabase();
+
+		final int match = mBookMatcher.match(uri);
+		Log.i(TAG, "delete: match = " + match);
+		switch (match) {
+			case BOOK:
+				result = db.delete(BookDataBaseHelper.Tables.BOOK, selection, selectionArgs);
+				break;
+			case BOOK_ID:
+				long bookId = ContentUris.parseId(uri);
+				String[] newSelectionArgs = insertSelectionArg(selectionArgs,
+						String.valueOf(bookId));
+				String newSelection = " AND " + BookConstract.Book._ID + " = ?";
+				StringBuffer sb = new StringBuffer(selection);
+				sb.append(newSelection);
+				result = db.delete(BookDataBaseHelper.Tables.BOOK, sb.toString(),
+						newSelectionArgs);
+				break;
+			case BOOK_NAME:
+				break;
+		}
+		return result;
 	}
 
 	@Override

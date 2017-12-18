@@ -29,13 +29,27 @@ public class MainActivity extends AppCompatActivity {
 
 		//insertSomeData();
 
+//		queryAllBooks();
+//		queryBookById(3);
+//		queryBookByName("Sherlock Holmes");
+//		queryBookByType("TYPEA001");
+//		queryBookByUriID(6);
+//		queryBookByUriName("The Sorrows of Young Werther");
+
 		queryAllBooks();
-		queryBookById(3);
-		queryBookByName("Sherlock Holmes");
-		queryBookByType("TYPEA001");
-		queryBookByUriID(6);
-		queryBookByUriName("The Sorrows of Young Werther");
+		deleteBookById();
 	}
+
+	private void deleteBookById() {
+		int deleteId = getContentResolver().delete(BookConstract.Book.CONTENT_URI,
+				BookConstract.Book._ID + " = ?",
+				new String[]{"1"});
+		if (deleteId > 0) {
+			Log.i(TAG, "deleteBookById: delete book" + deleteId);
+			queryAllBooks();
+		}
+	}
+
 
 	private void insertSomeData() {
 		BookDataBaseHelper dataBaseHelper = BookDataBaseHelper.getInstance(mContext);
