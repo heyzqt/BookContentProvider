@@ -18,12 +18,18 @@ public class BookDataBaseHelper extends SQLiteOpenHelper {
 
 	public interface Tables {
 		public static final String BOOK = "book";
+		public static final String MIMETYPES = "mimetypes";
 	}
 
 	public interface BookColumns {
-		public static final String BOOK_ID = BaseColumns._ID;
-		public static final String BOOK_NAME = "name";
-		public static final String BOOK_TYPE = "type";
+		public static final String _ID = BaseColumns._ID;
+		public static final String NAME = "name";
+		public static final String TYPE = "type";
+	}
+
+	public interface MimetypesColumns {
+		public static final String _ID = BaseColumns._ID;
+		public static final String MIMETYPE = "mimetype";
 	}
 
 	private static BookDataBaseHelper mSingleton = null;
@@ -48,10 +54,22 @@ public class BookDataBaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.i(TAG, "onCreate: ");
-		db.execSQL("CREATE TABLE " + Tables.BOOK + "(" + BookColumns.BOOK_ID +
+		//create book table
+		db.execSQL("CREATE TABLE " + Tables.BOOK + "(" + BookColumns._ID +
 				" INTEGER PRIMARY KEY AUTOINCREMENT," +
-				BookColumns.BOOK_NAME + " TEXT," +
-				BookColumns.BOOK_TYPE + " TEXT);");
+				BookColumns.NAME + " TEXT," +
+				BookColumns.TYPE + " TEXT);");
+
+		//create mimetypes table
+		db.execSQL("CREATE TABLE " + Tables.MIMETYPES + "(" + MimetypesColumns._ID
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				MimetypesColumns.MIMETYPE + " TEXT);");
+
+		//insert 2 datas to table mimetypes
+		db.execSQL("INSERT INTO " + Tables.MIMETYPES + " VALUES(null"
+				+ ",\'vnd.android.cursor.item/name\')");
+		db.execSQL("INSERT INTO " + Tables.MIMETYPES + " VALUES(null"
+				+ ",\'vnd.android.cursor.item/type\')");
 	}
 
 	@Override
