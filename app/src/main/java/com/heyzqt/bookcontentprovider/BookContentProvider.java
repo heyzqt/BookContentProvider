@@ -131,7 +131,7 @@ public class BookContentProvider extends ContentProvider {
 				long bookId = ContentUris.parseId(uri);
 				String[] newSelectionArgs = insertSelectionArg(selectionArgs,
 						String.valueOf(bookId));
-				StringBuffer sb = new StringBuffer();
+				StringBuilder sb = new StringBuilder();
 				String newSelection = "";
 				if (selection == null || "".equals(selection)) {
 					newSelection = BookConstract.Book._ID + " = ?";
@@ -146,6 +146,33 @@ public class BookContentProvider extends ContentProvider {
 						newSelectionArgs);
 				break;
 			case BOOK_NAME:
+				result = -1;
+				List<String> pathSegments = uri.getPathSegments();
+				final String mimeTypeIsNameExpression =
+						BookDataBaseHelper.BookColumns.MIMETYPE_ID + " = "
+								+ mHelper.getMimeTypeIdForName();
+
+				String[] selectionWithNameArgs = null;
+				if (pathSegments.get(2) != null || !"".equals(pathSegments.get(2))) {
+					selectionWithNameArgs = insertSelectionArg(selectionArgs, pathSegments
+							.get(2));
+				} else {
+					selectionWithNameArgs = selectionArgs;
+				}
+
+				StringBuilder nameSb = new StringBuilder();
+				String nameSelection = "";
+				if (selection == null || "".equals(selection)) {
+					nameSelection = BookConstract.Name.NAME + " = ?";
+					nameSb.append(nameSelection);
+				} else {
+					nameSelection = " AND " + BookConstract.Name.NAME + " = ?";
+					nameSb.append(selection);
+					nameSb.append(nameSelection);
+				}
+
+				result = db.delete(BookDataBaseHelper.Tables.BOOK, nameSb.toString(),
+						selectionWithNameArgs);
 				break;
 		}
 		return result;

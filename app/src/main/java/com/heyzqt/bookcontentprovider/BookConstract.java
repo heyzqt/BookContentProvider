@@ -28,7 +28,7 @@ public final class BookConstract {
 		public Name() {
 		}
 
-		public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "name");
+		public static final Uri CONTENT_URI = Uri.withAppendedPath(Book.CONTENT_URI, "name");
 
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/name";
 
@@ -40,7 +40,7 @@ public final class BookConstract {
 		public Type() {
 		}
 
-		public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "type");
+		public static final Uri CONTENT_URI = Uri.withAppendedPath(Book.CONTENT_URI, "type");
 
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/type";
 

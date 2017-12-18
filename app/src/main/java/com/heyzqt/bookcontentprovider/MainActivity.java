@@ -34,11 +34,23 @@ public class MainActivity extends AppCompatActivity {
 //		queryBookByName("Sherlock Holmes");
 //		queryBookByType("TYPEA001");
 //		queryBookByUriID(6);
-//		queryBookByUriName("The Sorrows of Young Werther");
+		//queryBookByUriName("The Sorrows of Young Werther");
 
 		queryAllBooks();
 		//deleteBookById();
-		deleteBookByUriId(2);
+		//deleteBookByUriId(2);
+		deleteBookByUriName("Harry Porter");
+	}
+
+	private void deleteBookByUriName(String str) {
+		Uri uri = Uri.withAppendedPath(BookConstract.Name.CONTENT_URI, str);
+		int deleteId = getContentResolver().delete(uri,
+				null,
+				null);
+		if (deleteId > 0) {
+			Log.i(TAG, "deleteBookById: delete book " + deleteId);
+			queryAllBooks();
+		}
 	}
 
 	private void deleteBookByUriId(int id) {
@@ -47,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 				"",
 				null);
 		if (deleteId > 0) {
-			Log.i(TAG, "deleteBookById: delete book" + deleteId);
+			Log.i(TAG, "deleteBookById: delete book " + deleteId);
 			queryAllBooks();
 		}
 	}
@@ -61,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 			queryAllBooks();
 		}
 	}
-
 
 	private void insertSomeData() {
 		BookDataBaseHelper dataBaseHelper = BookDataBaseHelper.getInstance(mContext);
