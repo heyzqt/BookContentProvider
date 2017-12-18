@@ -13,6 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.List;
+
 /**
  * Created by heyzqt on 12/12/2017.
  */
@@ -73,7 +75,19 @@ public class BookContentProvider extends ContentProvider {
 				selectionArgs = insertSelectionArg(selectionArgs, String.valueOf(bookId));
 				qb.appendWhere(BookConstract.Book._ID + " = ?");
 				break;
+			case BOOK_NAME:
+				List<String> pathSegments = uri.getPathSegments();
+				final String mimeTypeIsNameExpression = BookDataBaseHelper.BookColumns
+						.MIMETYPE_ID + " = " + mHelper.getMimeTypeIdForName();
+				table = pathSegments.get(0);
+				qb.setTables(table);
 
+				qb.appendWhere("1 AND " + mimeTypeIsNameExpression);
+				if ("name" .equals(pathSegments.get(1)) && pathSegments.get(2) != null) {
+					qb.appendWhere(" AND " + BookConstract.Name.NAME + " = "
+							+ '\'' + pathSegments.get(2) + '\'');
+				}
+				break;
 		}
 		return qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 	}

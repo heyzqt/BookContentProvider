@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 		mContext = this;
 		Log.i(TAG, "onCreate: ");
 
+
 		//insertSomeData();
 
 		queryAllBooks();
@@ -33,16 +34,17 @@ public class MainActivity extends AppCompatActivity {
 		queryBookByName("Sherlock Holmes");
 		queryBookByType("TYPEA001");
 		queryBookByUriID(6);
+		queryBookByUriName("The Sorrows of Young Werther");
 	}
 
 	private void insertSomeData() {
 		BookDataBaseHelper dataBaseHelper = BookDataBaseHelper.getInstance(mContext);
 		SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
-		String insertStr1 = "INSERT INTO BOOK VALUES(null,\'Little Prince\',\'TYPEA001\')";
+		String insertStr1 = "INSERT INTO BOOK VALUES(null,\'Little Prince\',\'TYPEA001\',1)";
 		String insertStr2 = "INSERT INTO BOOK VALUES(null,\'The Sorrows of Young Werther\',"
-				+ "\'TYPEB001\')";
-		String insertStr3 = "INSERT INTO BOOK VALUES(null,\'Harry Porter\',\'TYPEA002\')";
-		String insertStr4 = "INSERT INTO BOOK VALUES(null,\'Sherlock Holmes\',\'TYPEC001\')";
+				+ "\'TYPEB001\',2)";
+		String insertStr3 = "INSERT INTO BOOK VALUES(null,\'Harry Porter\',\'TYPEA002\',3)";
+		String insertStr4 = "INSERT INTO BOOK VALUES(null,\'Sherlock Holmes\',\'TYPEC001\',1)";
 		database.execSQL(insertStr1);
 		database.execSQL(insertStr2);
 		database.execSQL(insertStr3);
@@ -86,10 +88,24 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
+	private void queryBookByUriName(String name) {
+		Uri tempuri = Uri.withAppendedPath(BookConstract.Book.CONTENT_URI, "name");
+		Uri uri = Uri.withAppendedPath(tempuri, name);
+		Cursor cursor = getContentResolver().query(uri,
+				null,
+				null,
+				null,
+				null);
+		if (cursor != null) {
+			showCursor(cursor);
+			cursor.close();
+		}
+	}
+
 	private void queryBookByName(String name) {
 		Cursor cursor = getContentResolver().query(BookConstract.Book.CONTENT_URI,
 				null,
-				BookConstract.Book.NAME + " = ?",
+				BookConstract.Name.NAME + " = ?",
 				new String[]{name},
 				null);
 		if (cursor != null) {
@@ -101,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 	private void queryBookByType(String type) {
 		Cursor cursor = getContentResolver().query(BookConstract.Book.CONTENT_URI,
 				null,
-				BookConstract.Book.TYPE + " = ?",
+				BookConstract.Type.TYPE + " = ?",
 				new String[]{type},
 				null);
 		if (cursor != null) {

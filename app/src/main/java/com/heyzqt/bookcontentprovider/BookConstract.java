@@ -20,11 +20,29 @@ public final class BookConstract {
 
 		public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "book");
 
-		public static final Uri NAME_CONTENT_URI = Uri.withAppendedPath(CONTENT_URI, "name");
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/book";
+	}
 
-		public static final Uri TYPE_CONTENT_URI = Uri.withAppendedPath(CONTENT_URI, "type");
+	public static final class Name implements BaseColumns {
+
+		public Name() {
+		}
+
+		public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "name");
+
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/name";
 
 		public static final String NAME = "name";
+	}
+
+	public static final class Type implements BaseColumns {
+
+		public Type() {
+		}
+
+		public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "type");
+
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/type";
 
 		public static final String TYPE = "type";
 	}

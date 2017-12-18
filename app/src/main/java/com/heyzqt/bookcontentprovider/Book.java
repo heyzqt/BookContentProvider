@@ -12,6 +12,8 @@ public class Book {
 
 	private String type;
 
+	private String mimetype_id;
+
 	public int get_ID() {
 		return _ID;
 	}
@@ -36,12 +38,21 @@ public class Book {
 		this.type = type;
 	}
 
+	public String getMimetype_id() {
+		return mimetype_id;
+	}
+
+	public void setMimetype_id(String mimetype_id) {
+		this.mimetype_id = mimetype_id;
+	}
+
 	@Override
 	public String toString() {
 		return "Book{" +
 				"_ID=" + _ID +
 				", name='" + name + '\'' +
 				", type='" + type + '\'' +
+				", mimetype_id='" + mimetype_id + '\'' +
 				'}';
 	}
 }
