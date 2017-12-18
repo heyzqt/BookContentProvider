@@ -131,9 +131,17 @@ public class BookContentProvider extends ContentProvider {
 				long bookId = ContentUris.parseId(uri);
 				String[] newSelectionArgs = insertSelectionArg(selectionArgs,
 						String.valueOf(bookId));
-				String newSelection = " AND " + BookConstract.Book._ID + " = ?";
-				StringBuffer sb = new StringBuffer(selection);
-				sb.append(newSelection);
+				StringBuffer sb = new StringBuffer();
+				String newSelection = "";
+				if (selection == null || "".equals(selection)) {
+					newSelection = BookConstract.Book._ID + " = ?";
+					sb.append(newSelection);
+				} else {
+					newSelection = " AND " + BookConstract.Book._ID + " = ?";
+					sb.append(selection);
+					sb.append(newSelection);
+				}
+
 				result = db.delete(BookDataBaseHelper.Tables.BOOK, sb.toString(),
 						newSelectionArgs);
 				break;

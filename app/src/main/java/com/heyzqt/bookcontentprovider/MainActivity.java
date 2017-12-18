@@ -37,7 +37,19 @@ public class MainActivity extends AppCompatActivity {
 //		queryBookByUriName("The Sorrows of Young Werther");
 
 		queryAllBooks();
-		deleteBookById();
+		//deleteBookById();
+		deleteBookByUriId(2);
+	}
+
+	private void deleteBookByUriId(int id) {
+		Uri newUri = Uri.withAppendedPath(BookConstract.Book.CONTENT_URI, String.valueOf(id));
+		int deleteId = getContentResolver().delete(newUri,
+				"",
+				null);
+		if (deleteId > 0) {
+			Log.i(TAG, "deleteBookById: delete book" + deleteId);
+			queryAllBooks();
+		}
 	}
 
 	private void deleteBookById() {
@@ -45,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 				BookConstract.Book._ID + " = ?",
 				new String[]{"1"});
 		if (deleteId > 0) {
-			Log.i(TAG, "deleteBookById: delete book" + deleteId);
+			Log.i(TAG, "deleteBookById: delete book " + deleteId);
 			queryAllBooks();
 		}
 	}
