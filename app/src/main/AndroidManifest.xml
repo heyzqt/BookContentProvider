@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.heyzqt.bookcontentprovider">
 
+    <permission
+        android:name="com.heyzqt.permission.READ_BOOKPROVIDER"
+        android:label="Allow read book provider"
+        android:protectionLevel="normal"/>
+    <permission
+        android:name="com.heyzqt.permission.WRITE_BOOKPROVIDER"
+        android:label="Allow write book provider"
+        android:protectionLevel="normal"/>
+
     <application
         android:name=".BookApplication"
         android:allowBackup="true"
@@ -21,7 +30,9 @@
             android:name="com.heyzqt.bookcontentprovider.BookContentProvider"
             android:authorities="com.heyzqt.book"
             android:exported="true"
-            android:multiprocess="false"/>
+            android:multiprocess="false"
+            android:readPermission="com.heyzqt.permission.READ_BOOKPROVIDER"
+            android:writePermission="com.heyzqt.permission.WRITE_BOOKPROVIDER"/>
     </application>
 
 </manifest>
